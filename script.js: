@@ -1,0 +1,14 @@
+function adjustSchedule() {
+    const selectedCompanies = document.querySelectorAll('.selected');
+    const confirmedCompanies = [];
+
+    selectedCompanies.forEach(row => {
+        const companyNumber = row.firstChild.textContent;
+        confirmedCompanies.push(companyNumber);
+        row.remove();
+    });
+
+    // 확정된 기업 번호를 화면에 표시
+    const resultContainer = document.getElementById('result');
+    resultContainer.textContent = `확정된 기업 번호: ${confirmedCompanies.join(', ')}`;
+}
