@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+#app {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+.editable-row {
+    cursor: pointer;
+}
+
+.selected {
+    background-color: #aaffaa;
+}
+
+button {
+    display: block;
+    margin-top: 20px;
+    padding: 10px;
+    cursor: pointer;
+}
