@@ -1,72 +1,58 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // 초기 설정
-    initializeSchedule();
-});
-
-function initializeSchedule() {
-    const traders = ["A전무상"]; // 전문 무역 상사
-    const companies = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]; // 제조 기업
-    const sessions = Array.from({ length: companies.length }, (_, i) => `상담 ${i + 1}`); // 세션
-
-    const scheduleTable = document.getElementById('schedule');
-    
-    // 1. 1행에 전문 무역 상사를 나열
-    createRow(traders, 'traders', scheduleTable);
-
-    // 2. 1열에 세션(1번째 상담, 2번째 상담 ...)을 나열
-    createRow(sessions, 'sessions', scheduleTable);
-
-    // 3. 각각의 전무상은 자신의 2행에 상담을 희망하는 제조기업의 번호들을 모두 적음
-    companies.forEach(company => {
-        const row = createRow([company], `company-${company}`, scheduleTable);
-        row.classList.add('editable-row');
-        row.addEventListener('click', () => toggleCompanySelection(row, company));
-    });
-}
-
-function createRow(data, id, parent) {
-    const row = document.createElement('tr');
-    row.id = id;
-
-    data.forEach(item => {
-        const cell = document.createElement('td');
-        cell.textContent = item;
-        row.appendChild(cell);
-    });
-
-    parent.appendChild(row);
-    return row;
-}
-
-function toggleCompanySelection(row, company) {
-    row.classList.toggle('selected');
-}
-
-function adjustSchedule() {
-    const selectedCompanies = document.querySelectorAll('.selected');
-    const confirmedCompanies = [];
-
-    selectedCompanies.forEach(row => {
-        const companyNumber = row.firstChild.textContent;
-        confirmedCompanies.push(companyNumber);
-        row.remove();
-    });
-
-    // 확정된 기업 번호를 화면에 표시
-    const resultContainer = document.getElementById('result');
-    resultContainer.textContent = `확정된 기업 번호: ${confirmedCompanies.join(', ')}`;
-}
-
-function addCompany() {
-    const inputElement = document.getElementById('companyInput');
-    const inputValue = inputElement.value.trim();
-
-    if (inputValue !== "") {
-        const scheduleTable = document.getElementById('schedule');
-        const row = createRow([inputValue], `company-${inputValue}`, scheduleTable);
-        row.classList.add('editable-row');
-        row.addEventListener('click', () => toggleCompanySelection(row, inputValue));
-
-        inputElement.value = ""; // 입력 필드 비우기
+// Create a 10x10 table
+const table = document.getElementById('numberTable');
+for (let i = 0; i < 11; i++) {
+    const row = table.insertRow();
+    for (let j = 0; j < 11; j++) {
+        const cell = row.insertCell();
+        if (i === 0 && j > 0) {
+            cell.textContent = j;
+        }
+        if (i > 0 && j === 0) {
+            cell.textContent = String.fromCharCode(64 + i);
+        }
     }
+}
+
+// Function to process numbers
+function processNumbers() {
+    const row2 = table.rows[1];
+
+    // Get unique numbers from the second row
+    const uniqueNumbers = Array.from(new Set(Array.from(row2.cells).map(cell => cell.textContent)));
+
+    if (uniqueNumbers.length === 1) {
+        // If only one unique number, color it red
+        row2.cells[0].classList.add('red');
+    } else if (uniqueNumbers.length > 1) {
+        // If multiple unique numbers, color the leftmost cell red
+        row2.cells[0].classList.add('red');
+    } else {
+        // If no unique numbers, color the smallest number red
+        let minNumber = Infinity;
+        Array.from(row2.cells).forEach(cell => {
+            const num = parseInt(cell.textContent);
+            if (!isNaN(num) && num < minNumber) {
+                minNumber = num;
+            }
+        });
+
+        Array.from(row2.cells).forEach(cell => {
+            const num = parseInt(cell.textContent);
+            if (num === minNumber) {
+                cell.classList.add('red');
+            } else {
+                cell.textContent = '';
+            }
+        });
+    }
+
+    // Remove numbers from the same row and column as the colored cell
+    const coloredCellIndex = Array.from(row2.cells).findIndex(cell => cell.classList.contains('red'));
+
+    Array.from(table.rows).forEach(row => {
+        row.deleteCell(coloredCellIndex);
+    });
+    Array.from(table.rows).forEach(row => {
+        row.deleteCell(0);
+    });
 }
