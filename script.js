@@ -56,3 +56,17 @@ function adjustSchedule() {
     const resultContainer = document.getElementById('result');
     resultContainer.textContent = `확정된 기업 번호: ${confirmedCompanies.join(', ')}`;
 }
+
+function addCompany() {
+    const inputElement = document.getElementById('companyInput');
+    const inputValue = inputElement.value.trim();
+
+    if (inputValue !== "") {
+        const scheduleTable = document.getElementById('schedule');
+        const row = createRow([inputValue], `company-${inputValue}`, scheduleTable);
+        row.classList.add('editable-row');
+        row.addEventListener('click', () => toggleCompanySelection(row, inputValue));
+
+        inputElement.value = ""; // 입력 필드 비우기
+    }
+}
