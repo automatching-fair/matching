@@ -4,24 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>상담 일정 조정</title>
+    <title>Number Colorizer</title>
 </head>
 <body>
-
-    <div id="app">
-        <h1>상담 일정 조정</h1>
-        <table id="schedule">
-            <!-- 여기에 일정을 표시할 테이블이 들어갑니다. -->
-        </table>
-        <button onclick="adjustSchedule()">일정 조정하기</button>
-        <div>
-            <label for="companyInput">기업 번호 입력:</label>
-            <input type="text" id="companyInput" placeholder="1, 2, 3">
-            <button onclick="addCompany()">추가</button>
-        </div>
-        <div id="result"></div>
-    </div>
-
+    <table id="numberTable"></table>
+    <br>
+    <button onclick="processNumbers()">실행</button>
     <script src="script.js"></script>
 </body>
 </html>
