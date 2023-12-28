@@ -1,5 +1,5 @@
-let rowCounter = 2;
-let columnCounter = 4;
+let rowCounter = 1;
+let columnCounter = 3;
 
 function addColumn() {
   var table = document.getElementById("myTable");
@@ -12,13 +12,9 @@ function addColumn() {
   headerRow.appendChild(newHeaderCell);
   columnCounter++;
 
-  for (var i = 0; i < rowCount; i++) {
+  for (var i = 1; i < rowCount; i++) {
     var cell = table.rows[i].insertCell(-1);
-    if (i === 1) {
-      cell.innerHTML = '<input type="number">';
-    } else {
-      cell.innerHTML = '';
-    }
+    cell.innerHTML = '<input type="number">';
   }
 }
 
