@@ -1,30 +1,38 @@
 function addColumn() {
   var table = document.getElementById("myTable");
-  var headerRow = document.getElementById("headerRow");
+  var headerRow = table.rows[0];
   var rowCount = table.rows.length;
 
   var newHeaderCell = document.createElement("td");
-  var newHeaderNumber = document.createTextNode(rowCount + 1);
+  var newHeaderNumber = document.createTextNode(rowCount);
   newHeaderCell.appendChild(newHeaderNumber);
   headerRow.appendChild(newHeaderCell);
 
-  for (var i = 0; i < rowCount; i++) {
+  for (var i = 1; i < rowCount; i++) {
     var cell = table.rows[i].insertCell(-1);
     cell.innerHTML = '<input type="number">';
   }
 }
 
-function confirmExpansion() {
+function addRow() {
   var sessionInput = document.getElementById("sessionInput").value;
   var table = document.getElementById("myTable");
-  var currentColumnCount = table.rows[0].cells.length - 3; // 첫 번째 줄 숫자 칸 제외
+  var currentRowCount = table.rows.length;
 
-  if (sessionInput > currentColumnCount) {
-    var expandBy = sessionInput - currentColumnCount;
+  if (sessionInput > 0) {
+    var expandBy = sessionInput;
     for (var i = 0; i < expandBy; i++) {
-      addColumn();
+      var row = table.insertRow(-1);
+      for (var j = 0; j < table.rows[0].cells.length; j++) {
+        var cell = row.insertCell(j);
+        if (j === 0) {
+          cell.innerHTML = currentRowCount + i;
+        } else {
+          cell.innerHTML = '<input type="number">';
+        }
+      }
     }
   } else {
-    alert("현재보다 큰 숫자를 입력하세요.");
+    alert("올바른 숫자를 입력하세요.");
   }
 }
