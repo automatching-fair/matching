@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>상담회 자동 매칭</title>
+  <title>표 확장하기</title>
+  <script src="script.js"></script>
 </head>
 <body>
-    <table id="numberTable"></table>
-    <br>
-    <button onclick="processNumbers()">실행</button>
-    <script src="script.js"></script>
+  <table id="myTable" border="1">
+    <tr>
+      <td><input type="number" id="cell00"></td>
+      <td><input type="number" id="cell01"></td>
+    </tr>
+    <tr>
+      <td><input type="number" id="cell10"></td>
+      <td><input type="number" id="cell11"></td>
+    </tr>
+  </table>
+  <button onclick="addRow()">확장</button>
+  <label for="sessionInput">세션 입력:</label>
+  <input type="number" id="sessionInput">
+  <button onclick="expandTable()">확장</button>
 </body>
 </html>
