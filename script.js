@@ -15,24 +15,16 @@ function addColumn() {
 }
 
 function addRow() {
-  var sessionInput = document.getElementById("sessionInput").value;
   var table = document.getElementById("myTable");
-  var currentRowCount = table.rows.length;
+  var rowCount = table.rows.length;
 
-  if (sessionInput > 0) {
-    var expandBy = sessionInput;
-    for (var i = 0; i < expandBy; i++) {
-      var row = table.insertRow(-1);
-      for (var j = 0; j < table.rows[0].cells.length; j++) {
-        var cell = row.insertCell(j);
-        if (j === 0) {
-          cell.innerHTML = currentRowCount + i;
-        } else {
-          cell.innerHTML = '<input type="number">';
-        }
-      }
+  var row = table.insertRow(rowCount);
+  for (var i = 0; i < table.rows[0].cells.length; i++) {
+    var cell = row.insertCell(i);
+    if (rowCount === 1) {
+      cell.innerHTML = '<input type="number">';
+    } else {
+      cell.innerHTML = '';
     }
-  } else {
-    alert("올바른 숫자를 입력하세요.");
   }
 }
