@@ -1,4 +1,4 @@
-let rowCounter = 1;
+let rowCounter = 2;
 let columnCounter = 3;
 
 function addColumn() {
@@ -25,13 +25,12 @@ function addRow() {
   var table = document.getElementById("myTable");
   var rowCount = table.rows.length;
 
-  rowCounter++;
-
   var row = table.insertRow(rowCount);
   for (var i = 0; i < columnCounter; i++) {
     var cell = row.insertCell(i);
     if (i === 0) {
       cell.innerHTML = rowCounter;
+      rowCounter++;
     } else {
       var input = document.createElement('input');
       input.setAttribute('type', 'text');
@@ -50,10 +49,10 @@ function handleInput(input) {
 
     // Insert each number in the cell
     for (var i = 0; i < numbers.length; i++) {
-      input.value += numbers[i].trim(); // Show all numbers without leading/trailing spaces for better user experience
+      input.value += numbers[i].trim();
 
       if (i !== numbers.length - 1) {
-        input.value += ', '; // Add commas for separation, except for the last number
+        input.value += ', ';
       }
     }
   });
