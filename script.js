@@ -14,6 +14,7 @@ function addRow() {
       input.setAttribute('type', 'text');
       input.setAttribute('oninput', 'handleInput(this)');
       cell.appendChild(input);
+      handleInput(input);
     }
   }
 }
