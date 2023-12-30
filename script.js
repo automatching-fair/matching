@@ -14,10 +14,8 @@ function addColumn() {
 
   for (var i = 1; i < rowCount; i++) {
     var cell = table.rows[i].insertCell(-1);
-    var input = document.createElement('input');
-    input.setAttribute('type', 'text');
-    cell.appendChild(input);
-    handleInput(input); // Assign event handler to the newly added input field
+    cell.innerHTML = '<input type="text">';
+    handleInput(cell.lastChild); // Assign event handler to the newly added input field
   }
 }
 
@@ -33,10 +31,8 @@ function addRow() {
     if (i === 0) {
       cell.innerHTML = rowCounter;
     } else {
-      var input = document.createElement('input');
-      input.setAttribute('type', 'text');
-      cell.appendChild(input);
-      handleInput(input); // Assign event handler to the newly added input field
+      cell.innerHTML = '<input type="text">';
+      handleInput(cell.lastChild); // Assign event handler to the newly added input field
     }
   }
 }
