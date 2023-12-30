@@ -12,12 +12,22 @@ function addRow() {
     } else {
       var input = document.createElement('input');
       input.setAttribute('type', 'text');
-      input.setAttribute('oninput', 'handleInput(this)');
       cell.appendChild(input);
-      handleInput(input);
     }
   }
+  
+  handleNewInputs(); // 새로운 입력 필드에 이벤트 핸들러 할당
 }
+
+function handleNewInputs() {
+  var inputs = document.querySelectorAll('input[type="text"]');
+  inputs.forEach(input => {
+    if (!input.hasAttribute('oninput')) {
+      input.setAttribute('oninput', 'handleInput(this)');
+    }
+  });
+}
+
 
 function handleInput(input) {
   var text = input.value;
