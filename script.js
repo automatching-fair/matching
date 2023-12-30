@@ -1,4 +1,4 @@
-let rowCounter = 2;
+let rowCounter = 0;
 let columnCounter = 3;
 
 function addColumn() {
