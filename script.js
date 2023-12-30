@@ -1,4 +1,4 @@
-let rowCounter = 1;
+let rowCounter = 2;
 let columnCounter = 3;
 
 function addColumn() {
@@ -15,9 +15,8 @@ function addColumn() {
   for (var i = 1; i < rowCount; i++) {
     var cell = table.rows[i].insertCell(-1);
     cell.innerHTML = '<input type="text">';
+    handleInput(cell.lastChild); // Assign event handler to the newly added input field
   }
-
-  handleNewInputs(); // 새로운 입력 필드에 이벤트 핸들러 할당
 }
 
 function addRow() {
@@ -33,49 +32,25 @@ function addRow() {
       cell.innerHTML = rowCounter;
     } else {
       cell.innerHTML = '<input type="text">';
+      handleInput(cell.lastChild); // Assign event handler to the newly added input field
     }
   }
-
-  handleNewInputs(); // 새로운 입력 필드에 이벤트 핸들러 할당
 }
 
-function handleNewInputs() {
-  var inputs = document.querySelectorAll('input[type="text"]');
-  inputs.forEach(input => {
-    if (!input.hasAttribute('oninput')) {
-      input.setAttribute('oninput', 'handleInput(this)');
+function handleInput(input) {
+  input.addEventListener('input', function() {
+    var text = input.value;
+    var numbers = text.split(',');
+
+    input.value = ''; // Clear the input field
+
+    // Insert each number in the cell
+    for (var i = 0; i < numbers.length; i++) {
+      input.value += numbers[i].trim(); // Show all numbers without leading/trailing spaces for better user experience
+
+      if (i !== numbers.length - 1) {
+        input.value += ', '; // Add commas for separation, except for the last number
+      }
     }
   });
-}
-
-function handleInput(input) {
-  var text = input.value;
-  var numbers = text.split(',');
-  
-  input.value = ''; // Clear the input field
-  
-  // Insert each number in the cell
-  for (var i = 0; i < numbers.length; i++) {
-    input.value += numbers[i]; // Show all numbers without commas for better user experience
-    
-    if (i !== numbers.length - 1) {
-      input.value += ', '; // Add commas for separation, except for the last number
-    }
-  }
-}
-
-function handleInput(input) {
-  var text = input.value;
-  var numbers = text.split(',');
-  
-  input.value = ''; // Clear the input field
-  
-  // Insert each number in the cell
-  for (var i = 0; i < numbers.length; i++) {
-    input.value += numbers[i]; // Show all numbers without commas for better user experience
-    
-    if (i !== numbers.length - 1) {
-      input.value += ', '; // Add commas for separation, except for the last number
-    }
-  }
 }
