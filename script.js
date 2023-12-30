@@ -26,11 +26,12 @@ function addRow() {
   var rowCount = table.rows.length;
 
   var row = table.insertRow(rowCount);
+  rowCounter++; // 행이 추가되기 전에 증가시켜야 올바른 순서로 값이 채워집니다.
+
   for (var i = 0; i < columnCounter; i++) {
     var cell = row.insertCell(i);
     if (i === 0) {
-      cell.innerHTML = rowCounter;
-      rowCounter++;
+      cell.innerHTML = rowCounter; // 이제 행을 추가한 후에 값을 할당합니다.
     } else {
       var input = document.createElement('input');
       input.setAttribute('type', 'text');
