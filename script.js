@@ -59,163 +59,68 @@ function handleInput(input) {
   });
 }
 
-
-function startMatching() {
+function startMatching2() {
   var table = document.getElementById("myTable");
   var rowCount = table.rows.length;
   var columnCount = table.rows[0].cells.length;
 
-  var firstRowValues = [];
+  var uniqueNumbers = [];
+  var countMap = {};
 
-  // 1. 1번 행의 값을 읽어오는 코드
+  // 1번 행에서 중복되지 않은 숫자 찾기
   for (var i = 1; i < columnCount; i++) {
-    firstRowValues.push(table.rows[1].cells[i].querySelector('input').value);
-  }
-
-  // 2. 중복이 아닌 숫자 찾기
-function findUniqueNumber() {
-  var uniqueNumber = null;
-  for (var i = 0; i < firstRowValues.length; i++) {
-    var currentValue = firstRowValues[i];
-    var count = 0;
-    for (var j = 0; j < firstRowValues.length; j++) {
-      if (currentValue === firstRowValues[j]) {
-        count++;
-      }
-    }
-    if (count === 1) {
-      uniqueNumber = currentValue;
-      break;
-    }
-  }
-  return uniqueNumber;
-}
-
-
-  // 3. 중복이 아닌 숫자 처리하는 코드
-function handleUniqueNumber() {
-  var uniqueNumber = findUniqueNumber();
-  if (uniqueNumber !== null) {
-    // 중복이 아닌 숫자가 있을 때 처리하는 코드 작성
-    for (var i = 2; i < rowCount; i++) {
-      for (var j = 1; j < columnCount; j++) {
-        var currentInput = table.rows[i].cells[j].querySelector('input');
-        if (currentInput.value !== uniqueNumber) {
-          currentInput.value = '';
-        }
-      }
-    }
-  }
-}
-
-
-  // 4. 여러 중복이 아닌 숫자 처리하는 코드
-function handleMultipleUniqueNumbers() {
-  var uniqueNumbers = [];
-  for (var i = 0; i < firstRowValues.length; i++) {
-    var currentValue = firstRowValues[i];
-    var count = 0;
-    for (var j = 0; j < firstRowValues.length; j++) {
-      if (currentValue === firstRowValues[j]) {
-        count++;
-      }
-    }
-    if (count === 1) {
-      uniqueNumbers.push(currentValue);
-    }
-  }
-
-  if (uniqueNumbers.length > 1) {
-    // 여러 중복이 아닌 숫자가 있을 때 처리하는 코드 작성
-    for (var i = 2; i < rowCount; i++) {
-      for (var j = 1; j < columnCount; j++) {
-        var currentInput = table.rows[i].cells[j].querySelector('input');
-        if (!uniqueNumbers.includes(currentInput.value)) {
-          currentInput.value = '';
-        }
-      }
-    }
-  }
-}
-
-
-  // 5. 모든 수들이 중복된 상태일 때 처리하는 코드
-function handleAllDuplicates() {
-  var uniqueNumbers = [];
-  var duplicates = [];
-
-  for (var i = 0; i < firstRowValues.length; i++) {
-    var currentValue = firstRowValues[i];
-    var count = 0;
-    for (var j = 0; j < firstRowValues.length; j++) {
-      if (currentValue === firstRowValues[j]) {
-        count++;
-      }
-    }
-    if (count === 1) {
-      uniqueNumbers.push(currentValue);
+    var inputValue = table.rows[1].cells[i].querySelector('input').value;
+    if (!countMap[inputValue]) {
+      countMap[inputValue] = 1;
     } else {
-      duplicates.push(currentValue);
+      countMap[inputValue]++;
     }
   }
 
-  if (uniqueNumbers.length === 0 && duplicates.length > 0) {
-    // 모든 수가 중복인 경우 처리하는 코드 작성
-    var smallest = duplicates.reduce((min, val) => Math.min(min, val));
+  for (var key in countMap) {
+    if (countMap.hasOwnProperty(key) && countMap[key] === 1) {
+      uniqueNumbers.push(key);
+    }
+  }
+
+  // 중복되지 않은 숫자 처리
+  if (uniqueNumbers.length === 1) {
+    var a = uniqueNumbers[0];
+
     for (var i = 2; i < rowCount; i++) {
-      for (var j = 1; j < columnCount; j++) {
-        var currentInput = table.rows[i].cells[j].querySelector('input');
-        if (currentInput.value !== smallest) {
-          currentInput.value = '';
-        }
+      var cellValue = table.rows[i].cells[1].querySelector('input').value;
+      if (cellValue !== a) {
+        table.rows[i].cells[1].querySelector('input').value = '';
+      }
+    }
+  } else if (uniqueNumbers.length > 1) {
+    var b = uniqueNumbers[0];
+
+    for (var i = 2; i < rowCount; i++) {
+      var cellValue = table.rows[i].cells[1].querySelector('input').value;
+      if (cellValue !== b) {
+        table.rows[i].cells[1].querySelector('input').value = '';
+      }
+    }
+  } else {
+    var min = Number.MAX_SAFE_INTEGER;
+
+    for (var i = 2; i < rowCount; i++) {
+      var cellValue = table.rows[i].cells[1].querySelector('input').value;
+      if (parseInt(cellValue) < min) {
+        min = parseInt(cellValue);
+      }
+    }
+
+    for (var i = 2; i < rowCount; i++) {
+      var cellValue = table.rows[i].cells[1].querySelector('input').value;
+      if (parseInt(cellValue) !== min) {
+        table.rows[i].cells[1].querySelector('input').value = '';
       }
     }
   }
-}
 
-
-  // 6. 가로, 세로에서 N을 삭제하는 코드
-function removeExceptSmallest() {
-  var smallest = Number.MAX_SAFE_INTEGER;
-
-  for (var i = 2; i < rowCount; i++) {
-    var currentInput = table.rows[i].cells[1].querySelector('input');
-    var currentValue = parseInt(currentInput.value);
-    if (!isNaN(currentValue)) {
-      smallest = Math.min(smallest, currentValue);
-    }
-  }
-
-  for (var i = 2; i < rowCount; i++) {
-    var currentInput = table.rows[i].cells[1].querySelector('input');
-    var currentValue = parseInt(currentInput.value);
-    if (!isNaN(currentValue) && currentValue !== smallest) {
-      currentInput.value = '';
-    }
-  }
-}
-
-function removeNFromRowsAndColumns() {
-  var baseInput = table.rows[1].cells[1].querySelector('input');
-  var baseValue = parseInt(baseInput.value);
-
-  for (var i = 1; i < rowCount; i++) {
-    for (var j = 1; j < columnCount; j++) {
-      var currentInput = table.rows[i].cells[j].querySelector('input');
-      var currentValue = parseInt(currentInput.value);
-      if (!isNaN(currentValue) && currentValue === baseValue && i !== 1 && j !== 1) {
-        currentInput.value = '';
-      }
-    }
-  }
-}
-
-
-  
-  // 7. 위의 단계들을 순서대로 실행하는 코드
-  findUniqueNumber();
-  handleUniqueNumber();
-  handleMultipleUniqueNumbers();
-  handleAllDuplicates();
-  removeNFromRowsAndColumns();
+  // 기준 칸 빨간색으로 표시 (기준 칸 값은 N으로 가정)
+  var baseCell = table.rows[1].cells[1].querySelector('input');
+  baseCell.style.color = 'red';
 }
