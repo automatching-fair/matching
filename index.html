@@ -21,69 +21,27 @@
   <button onclick="addColumn()">오른쪽으로 확장</button>
   <button onclick="addRow()">아래로 확장</button>
   <button onclick="startMatching()">매칭 시작</button> <!-- 새로운 '매칭 시작' 버튼 -->
-  <script>
+ <script>
+    // addColumn, addRow 함수들은 여기에 정의되어 있어야 합니다.
+
     function startMatching() {
       var table = document.getElementById("myTable");
       var rowCount = table.rows.length;
       var columnCount = table.rows[0].cells.length;
 
+      // 1. 1번 행의 값을 읽어오는 코드 작성
       var firstRowValues = [];
 
-      // 1번 행의 값을 읽어와 firstRowValues 배열에 저장
+      // firstRowValues 배열에 1번 행의 값을 저장합니다.
       for (var i = 1; i < columnCount; i++) {
         firstRowValues.push(table.rows[1].cells[i].querySelector('input').value);
       }
 
-      // 1번 행에서 중복이 아닌 숫자 찾기
-      var uniqueNumbers = [];
-      for (var i = 0; i < firstRowValues.length; i++) {
-        if (firstRowValues.indexOf(firstRowValues[i]) === firstRowValues.lastIndexOf(firstRowValues[i])) {
-          uniqueNumbers.push(firstRowValues[i]);
-        }
-      }
+      // 2. 매칭 알고리즘을 작성해야 합니다.
+      // ...
 
-      // 중복이 아닌 숫자가 없을 경우 가장 작은 수 찾기
-      if (uniqueNumbers.length === 0) {
-        var minNumber = Math.min.apply(null, firstRowValues.filter(Number));
-        uniqueNumbers.push(minNumber);
-      }
-
-      // 중복이 아닌 숫자로 채우기
-      for (var i = 2; i < rowCount; i++) {
-        for (var j = 1; j < columnCount; j++) {
-          var cell = table.rows[i].cells[j];
-          var input = document.createElement('input');
-          input.type = 'text';
-          input.value = uniqueNumbers[0];
-          cell.innerHTML = '';
-          cell.appendChild(input);
-        }
-      }
-
-      // 숫자 N을 찾아서 기준 셀로 설정
-      var baseCell;
-      for (var i = 1; i < rowCount; i++) {
-        for (var j = 1; j < columnCount; j++) {
-          if (table.rows[i].cells[j].querySelector('input').value === uniqueNumbers[0]) {
-            baseCell = table.rows[i].cells[j];
-            break;
-          }
-        }
-        if (baseCell) {
-          break;
-        }
-      }
-
-      // 기준 셀을 제외하고 N과 같은 숫자를 가진 셀 삭제
-      for (var i = 1; i < rowCount; i++) {
-        for (var j = 1; j < columnCount; j++) {
-          var cell = table.rows[i].cells[j];
-          var input = cell.querySelector('input');
-          if (cell !== baseCell && input.value === uniqueNumbers[0]) {
-            input.value = '';
-          }
-        }
-      }
+      // 나머지 단계를 수행하는 코드를 작성해주세요.
+      // 각 단계별로 함수를 작성하는 것이 좋을 수도 있습니다.
     }
   </script>
 </body>
