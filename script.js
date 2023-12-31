@@ -64,55 +64,57 @@ function startMatching2() {
   var rowCount = table.rows.length;
   var columnCount = table.rows[0].cells.length;
 
-  var uniqueValuesMap = new Map();
-  var allUniqueValues = [];
+  // 반복적으로 알고리즘 수행
+  while (true) {
+    var redFound = false; // 빨간색 숫자가 발견되었는지 여부를 나타내는 플래그
 
-  // 1번 행의 값을 읽어와 uniqueValuesMap에 저장
-  for (var i = 1; i < columnCount; i++) {
-    var inputValue = table.rows[1].cells[i].querySelector('input').value;
-    if (!uniqueValuesMap.has(inputValue)) {
-      uniqueValuesMap.set(inputValue, []);
+    // 1. 빨간색이 아닌 숫자 찾기
+    var nonRedNumbers = [];
+    for (var i = 1; i < columnCount; i++) {
+      var cellInput = table.rows[1].cells[i].querySelector('input');
+      if (cellInput.style.color !== 'red') {
+        nonRedNumbers.push(parseInt(cellInput.value));
+      }
     }
-    uniqueValuesMap.get(inputValue).push(i);
-    if (!allUniqueValues.includes(inputValue)) {
-      allUniqueValues.push(inputValue);
-    }
-  }
 
-  // 중복이 아닌 숫자가 하나인 경우 해당 숫자를 모든 셀에 적용
-  if (allUniqueValues.length === 1) {
-    var uniqueNumber = allUniqueValues[0];
-    var columnsToFill = uniqueValuesMap.get(uniqueNumber);
-    for (var i = 2; i < rowCount; i++) {
-      columnsToFill.forEach(function (column) {
-        table.rows[i].cells[column].querySelector('input').value = uniqueNumber;
-      });
-    }
-  }
-  // 중복이 아닌 숫자가 여러 개인 경우 왼쪽부터 가장 처음 나온 숫자만 남기고 나머지 삭제
-  else if (allUniqueValues.length > 1) {
-    for (var i = 2; i < rowCount; i++) {
+    // 2. 중복이 아닌 숫자 중 최솟값 찾기
+    var uniqueNonRedNumbers = Array.from(new Set(nonRedNumbers));
+    uniqueNonRedNumbers.sort((a, b) => a - b);
+
+    // 3. 중복이 아닌 숫자가 없는 경우 가장 작은 수 선택
+    var minNumber = uniqueNonRedNumbers.length > 0 ? uniqueNonRedNumbers[0] : Math.min(...nonRedNumbers);
+
+    // 4. a가 있는 칸에서 숫자 삭제 및 빨간색 a 다시 입력
+    for (var i = 1; i < rowCount; i++) {
       for (var j = 1; j < columnCount; j++) {
-        var cellValue = table.rows[i].cells[j].querySelector('input').value;
-        if (!allUniqueValues.includes(cellValue)) {
-          table.rows[i].cells[j].querySelector('input').value = '';
+        var cellInput = table.rows[i].cells[j].querySelector('input');
+        var cellValue = parseInt(cellInput.value);
+        if (cellValue === minNumber) {
+          if (i === 1 && cellInput.style.color !== 'red') {
+            cellInput.style.color = 'red';
+            redFound = true;
+          } else if (i !== 1) {
+            cellInput.value = '';
+          }
         }
       }
     }
-  }
-  // 모든 값이 중복인 경우 가장 작은 값만 남기고 나머지 삭제
-  else {
-    var minValue = Math.min(...allUniqueValues);
-    for (var i = 2; i < rowCount; i++) {
+
+    // 5. a와 같은 행과 열에 있는 a들을 전부 삭제
+    for (var i = 1; i < rowCount; i++) {
       for (var j = 1; j < columnCount; j++) {
-        var cellValue = table.rows[i].cells[j].querySelector('input').value;
-        if (parseInt(cellValue) !== minValue) {
-          table.rows[i].cells[j].querySelector('input').value = '';
+        var cellInput = table.rows[i].cells[j].querySelector('input');
+        var cellValue = parseInt(cellInput.value);
+        if ((cellValue === minNumber) && (i !== 1 || cellInput.style.color !== 'red')) {
+          cellInput.value = '';
         }
       }
     }
-  }
 
-  // 기준 칸을 빨간색으로 표시 (여기서는 가장 왼쪽 셀을 기준으로 함)
-  table.rows[1].cells[1].querySelector('input').style.color = 'red';
+    // 6. 1행의 모든 숫자가 빨간색이 될 때까지 반복
+    if (!redFound) {
+      break;
+    }
+  }
 }
+
