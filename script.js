@@ -30,11 +30,8 @@ function addRow() {
   for (var i = 0; i < columnCounter; i++) {
     var cell = row.insertCell(i);
     if (i === 0) {
-      if (rowCount === 0) {
-        cell.innerHTML = rowCounter; // 첫 번째 행을 추가할 때 2로 설정합니다.
-      } else {
-        cell.innerHTML = rowCounter + rowCount - 1; // 이후 행을 추가할 때 rowCounter와 rowCount를 더하여 값을 할당합니다.
-      }
+      cell.innerHTML = rowCounter; // 첫 번째 셀에 2로 설정합니다.
+      rowCounter = 1; // rowCounter를 1로 재설정합니다.
     } else {
       var input = document.createElement('input');
       input.setAttribute('type', 'text');
