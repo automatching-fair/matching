@@ -37,7 +37,7 @@
       // 각 열의 마지막 행까지 1번 행의 값을 복사하여 채웁니다.
       for (var i = 1; i < columnCount; i++) {
         for (var j = 2; j < rowCount; j++) {
-          table.rows[j].cells[i].innerHTML = firstRowValues[i - 1]; // innerText를 innerHTML로 변경
+          table.rows[j].cells[i].textContent = firstRowValues[i - 1]; // innerText를 textContent로 변경
         }
       }
     }
