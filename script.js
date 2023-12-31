@@ -58,23 +58,3 @@ function handleInput(input) {
     }
   });
 }
-
-function startMatching() {
-  var table = document.getElementById("myTable");
-  var rowCount = table.rows.length;
-  var columnCount = table.rows[0].cells.length;
-
-  var firstRowValues = []; // 1번 행의 값들을 저장할 배열 생성
-
-  // 1번 행의 값을 읽어와 firstRowValues 배열에 저장
-  for (var i = 1; i < columnCount; i++) {
-    firstRowValues.push(table.rows[1].cells[i].innerText); // 1번 행의 값들을 배열에 추가
-  }
-
-  // 각 열의 마지막 행까지 1번 행의 값을 복사하여 채웁니다.
-  for (var i = 1; i < columnCount; i++) {
-    for (var j = 2; j < rowCount; j++) {
-      table.rows[j].cells[i].innerText = firstRowValues[i - 1];
-    }
-  }
-}
