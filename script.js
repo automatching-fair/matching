@@ -1,4 +1,4 @@
-let rowCounter = 1;
+let rowCounter = 2;
 let columnCounter = 3;
 
 function addColumn() {
@@ -31,9 +31,9 @@ function addRow() {
     var cell = row.insertCell(i);
     if (i === 0) {
       if (rowCount === 0) {
-        cell.innerHTML = rowCounter + 1; // 첫 번째 행을 추가할 때 2로 설정합니다.
+        cell.innerHTML = rowCounter; // 첫 번째 행을 추가할 때 2로 설정합니다.
       } else {
-        cell.innerHTML = rowCounter + rowCount; // 이후 행을 추가할 때 rowCounter와 rowCount를 더하여 값을 할당합니다.
+        cell.innerHTML = rowCounter + rowCount - 1; // 이후 행을 추가할 때 rowCounter와 rowCount를 더하여 값을 할당합니다.
       }
     } else {
       var input = document.createElement('input');
