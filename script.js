@@ -64,63 +64,45 @@ function startMatching2() {
   var rowCount = table.rows.length;
   var columnCount = table.rows[0].cells.length;
 
-  var uniqueNumbers = [];
-  var countMap = {};
+  var firstRowValues = [];
+  var allUniqueValues = [];
 
-  // 1번 행에서 중복되지 않은 숫자 찾기
+  // 1번 행의 값을 읽어와 firstRowValues 배열에 저장
   for (var i = 1; i < columnCount; i++) {
     var inputValue = table.rows[1].cells[i].querySelector('input').value;
-    if (!countMap[inputValue]) {
-      countMap[inputValue] = 1;
-    } else {
-      countMap[inputValue]++;
+    firstRowValues.push(inputValue);
+    if (!allUniqueValues.includes(inputValue)) {
+      allUniqueValues.push(inputValue);
     }
   }
 
-  for (var key in countMap) {
-    if (countMap.hasOwnProperty(key) && countMap[key] === 1) {
-      uniqueNumbers.push(key);
+  // 중복이 아닌 숫자가 하나인 경우 해당 숫자를 모든 셀에 적용
+  if (allUniqueValues.length === 1) {
+    var uniqueNumber = allUniqueValues[0];
+    for (var i = 2; i < rowCount; i++) {
+      table.rows[i].cells[1].querySelector('input').value = uniqueNumber;
     }
   }
-
-  // 중복되지 않은 숫자 처리
-  if (uniqueNumbers.length === 1) {
-    var a = uniqueNumbers[0];
-
+  // 중복이 아닌 숫자가 여러 개인 경우 왼쪽부터 가장 처음 나온 숫자만 남기고 나머지 삭제
+  else if (allUniqueValues.length > 1) {
     for (var i = 2; i < rowCount; i++) {
       var cellValue = table.rows[i].cells[1].querySelector('input').value;
-      if (cellValue !== a) {
+      if (!firstRowValues.includes(cellValue)) {
         table.rows[i].cells[1].querySelector('input').value = '';
       }
     }
-  } else if (uniqueNumbers.length > 1) {
-    var b = uniqueNumbers[0];
-
+  }
+  // 모든 값이 중복인 경우 가장 작은 값만 남기고 나머지 삭제
+  else {
+    var minValue = Math.min(...firstRowValues);
     for (var i = 2; i < rowCount; i++) {
       var cellValue = table.rows[i].cells[1].querySelector('input').value;
-      if (cellValue !== b) {
-        table.rows[i].cells[1].querySelector('input').value = '';
-      }
-    }
-  } else {
-    var min = Number.MAX_SAFE_INTEGER;
-
-    for (var i = 2; i < rowCount; i++) {
-      var cellValue = table.rows[i].cells[1].querySelector('input').value;
-      if (parseInt(cellValue) < min) {
-        min = parseInt(cellValue);
-      }
-    }
-
-    for (var i = 2; i < rowCount; i++) {
-      var cellValue = table.rows[i].cells[1].querySelector('input').value;
-      if (parseInt(cellValue) !== min) {
+      if (parseInt(cellValue) !== minValue) {
         table.rows[i].cells[1].querySelector('input').value = '';
       }
     }
   }
 
-  // 기준 칸 빨간색으로 표시 (기준 칸 값은 N으로 가정)
-  var baseCell = table.rows[1].cells[1].querySelector('input');
-  baseCell.style.color = 'red';
+  // 기준 칸을 빨간색으로 표시 (여기서는 가장 왼쪽 셀을 기준으로 함)
+  table.rows[1].cells[1].querySelector('input').style.color = 'red';
 }
