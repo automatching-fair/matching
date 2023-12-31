@@ -64,13 +64,16 @@ function startMatching2() {
   var rowCount = table.rows.length;
   var columnCount = table.rows[0].cells.length;
 
-  var firstRowValues = [];
+  var uniqueValuesMap = new Map();
   var allUniqueValues = [];
 
-  // 1번 행의 값을 읽어와 firstRowValues 배열에 저장
+  // 1번 행의 값을 읽어와 uniqueValuesMap에 저장
   for (var i = 1; i < columnCount; i++) {
     var inputValue = table.rows[1].cells[i].querySelector('input').value;
-    firstRowValues.push(inputValue);
+    if (!uniqueValuesMap.has(inputValue)) {
+      uniqueValuesMap.set(inputValue, []);
+    }
+    uniqueValuesMap.get(inputValue).push(i);
     if (!allUniqueValues.includes(inputValue)) {
       allUniqueValues.push(inputValue);
     }
@@ -79,26 +82,33 @@ function startMatching2() {
   // 중복이 아닌 숫자가 하나인 경우 해당 숫자를 모든 셀에 적용
   if (allUniqueValues.length === 1) {
     var uniqueNumber = allUniqueValues[0];
+    var columnsToFill = uniqueValuesMap.get(uniqueNumber);
     for (var i = 2; i < rowCount; i++) {
-      table.rows[i].cells[1].querySelector('input').value = uniqueNumber;
+      columnsToFill.forEach(function (column) {
+        table.rows[i].cells[column].querySelector('input').value = uniqueNumber;
+      });
     }
   }
   // 중복이 아닌 숫자가 여러 개인 경우 왼쪽부터 가장 처음 나온 숫자만 남기고 나머지 삭제
   else if (allUniqueValues.length > 1) {
     for (var i = 2; i < rowCount; i++) {
-      var cellValue = table.rows[i].cells[1].querySelector('input').value;
-      if (!firstRowValues.includes(cellValue)) {
-        table.rows[i].cells[1].querySelector('input').value = '';
+      for (var j = 1; j < columnCount; j++) {
+        var cellValue = table.rows[i].cells[j].querySelector('input').value;
+        if (!allUniqueValues.includes(cellValue)) {
+          table.rows[i].cells[j].querySelector('input').value = '';
+        }
       }
     }
   }
   // 모든 값이 중복인 경우 가장 작은 값만 남기고 나머지 삭제
   else {
-    var minValue = Math.min(...firstRowValues);
+    var minValue = Math.min(...allUniqueValues);
     for (var i = 2; i < rowCount; i++) {
-      var cellValue = table.rows[i].cells[1].querySelector('input').value;
-      if (parseInt(cellValue) !== minValue) {
-        table.rows[i].cells[1].querySelector('input').value = '';
+      for (var j = 1; j < columnCount; j++) {
+        var cellValue = table.rows[i].cells[j].querySelector('input').value;
+        if (parseInt(cellValue) !== minValue) {
+          table.rows[i].cells[j].querySelector('input').value = '';
+        }
       }
     }
   }
