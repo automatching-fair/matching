@@ -64,12 +64,11 @@ function startMatching2() {
   var rowCount = table.rows.length;
   var columnCount = table.rows[0].cells.length;
 
-  // 반복적으로 알고리즘 수행
   while (true) {
-    var redFound = false; // 빨간색 숫자가 발견되었는지 여부를 나타내는 플래그
+    var nonRedNumbers = [];
+    var redFound = false;
 
     // 1. 빨간색이 아닌 숫자 찾기
-    var nonRedNumbers = [];
     for (var i = 1; i < columnCount; i++) {
       var cellInput = table.rows[1].cells[i].querySelector('input');
       if (cellInput.style.color !== 'red') {
